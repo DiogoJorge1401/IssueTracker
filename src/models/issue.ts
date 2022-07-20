@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema } from "mongoose";
 
 const schema = new Schema({
   project: { type: String, required: true },
@@ -10,14 +10,15 @@ const schema = new Schema({
   open: { type: Boolean, default: true },
   created_on: { type: String, default: () => new Date().toUTCString() },
   updated_on: { type: String, default: () => new Date().toUTCString() },
-})
+});
 
-schema.pre('save', function (next) {
-  if (this.isNew) return next()
-  this.updated_on = new Date().toUTCString()
-  next()
-})
+schema.pre("save", function (next) {
+  if (this.isNew) return next();
+  this.updated_on = new Date().toUTCString();
+  console.log({ created_on: this.created_on, updated_on: this.updated_on });
+  next();
+});
 
-const IssueModel = mongoose.model('Issue', schema)
+const IssueModel = mongoose.model("Issue", schema);
 
-export { IssueModel }
+export { IssueModel };

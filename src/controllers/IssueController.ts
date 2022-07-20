@@ -57,7 +57,10 @@ export class IssueController {
     if (!Object.keys(fields).length)
       throw { error: "no update field(s) sent", _id };
     try {
-      await IssueModel.findOneAndUpdate({ _id }, fields);
+      let issue = await IssueModel.findById(_id);
+      if (!issue) throw new Error();
+      issue = Object.assign(issue, fields);
+      await issue?.save()
     } catch (error) {
       throw { error: "could not update", _id };
     }
