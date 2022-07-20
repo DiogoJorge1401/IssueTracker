@@ -17,7 +17,7 @@ suite("Functional Tests", () => {
         .post("/api/issues/test1")
         .send({
           issue_title: "issue_title_test1",
-          issue_text: "issue_title_test1",
+          issue_text: "issue_text_test1",
           created_by: "created_by_test1",
           assigned_to: "assigned_to_test1",
           status_text: "status_text_test1",
@@ -40,7 +40,7 @@ suite("Functional Tests", () => {
         .post("/api/issues/test2")
         .send({
           issue_title: "issue_title_test2",
-          issue_text: "issue_title_test2",
+          issue_text: "issue_text_test2",
           created_by: "created_by_test2",
         })
         .then((res) => {
@@ -70,18 +70,44 @@ suite("Functional Tests", () => {
 
   suite("GET /api/issues/{project} => View issues", () => {
     test("should view isssues", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .get("/api/issues/test1")
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.property(res.body[0], "issue_text");
+          assert.equal(res.body[0].issue_text, "issue_title_test1");
+          done();
+        });
     });
 
     test("should view isssues with one filter", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .get("/api/issues/test1?issue_text=issue_text_test1")
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.property(res.body[0], "issue_text");
+          assert.equal(res.body[0].issue_text, "issue_text_test1");
+          done();
+        });
     });
 
     test("should view isssues with multiple filter", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .get(
+          "/api/issues/test1?issue_text=issue_text_test1&created_on=Wed, 20 Jul 2022 14:51:51 GMT"
+        )
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.property(res.body[0], "issue_text");
+          assert.equal(res.body[0].issue_text, "issue_text_test1");
+          done();
+        });
     });
   });
 

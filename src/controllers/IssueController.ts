@@ -9,6 +9,10 @@ interface IssueCreationData {
   status_text: any;
 }
 
+interface Query {
+  [key: string]: any;
+}
+
 export class IssueController {
   async create({
     project,
@@ -42,5 +46,9 @@ export class IssueController {
       created_on,
       updated_on,
     };
+  }
+
+  async find(query: Query) {
+    return await IssueModel.find(query).select({ __v: false });
   }
 }

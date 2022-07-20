@@ -10,6 +10,10 @@ export default function (app: Application) {
 
     .get(async (req, res) => {
       const { project } = req.params;
+
+      const issues = await issueController.find({ ...req.query, project });
+
+      return res.json(issues);
     })
 
     .post(async (req, res) => {
