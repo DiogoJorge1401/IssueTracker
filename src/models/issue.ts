@@ -12,12 +12,6 @@ const schema = new Schema({
   updated_on: { type: String, default: () => new Date().toUTCString() },
 });
 
-schema.pre("save", function (next) {
-  if (this.isNew) return next();
-  this.updated_on = new Date().toUTCString()
-  next();
-});
-
 const IssueModel = mongoose.model("Issue", schema);
 
 export { IssueModel };

@@ -55,17 +55,14 @@ export class IssueController {
   async update({ _id, fields }) {
     if (!_id) throw { error: "missing _id" };
 
-    if (!Object.keys(fields).length)
+    if (!Object.values(fields).filter(Boolean).length)
       throw { error: "no update field(s) sent", _id };
 
     try {
-      let issue = await IssueModel.findById(_id);
-
-      if (!issue) throw new Error();
-
-      issue = Object.assign(issue, fields);
-
-      await issue?.save();
+      await IssueModel.findByIdAndUpdate(_id, {
+        ...fields,
+        updated_on: new Date().toUTCString(),
+      });
 
       return { result: "successfully updated", _id };
     } catch (error) {
@@ -76,8 +73,8 @@ export class IssueController {
   async delete(_id: string) {
     if (!_id) throw { error: "missing _id" };
     try {
-      await IssueModel.findByIdAndDelete(_id);
-      return { result: "successfully deleted", _id: _id };
+      await IssueModel.findByIdAndRemove(_id);
+      return { result: "successfully deleted", _id };
     } catch (error) {
       throw { error: "could not delete", _id };
     }

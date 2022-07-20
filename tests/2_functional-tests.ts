@@ -209,7 +209,6 @@ suite("Functional Tests", () => {
         .delete("/api/issues/test1")
         .send({ _id: "banana" })
         .then((res) => {
-          console.log(res.body);
           assert.equal(res.status, 200);
           assert.equal(res.body.error, "could not delete");
           assert.equal(res.body._id, "banana");
