@@ -113,28 +113,67 @@ suite("Functional Tests", () => {
 
   suite("PUT /api/issues/{project} => Update issue", () => {
     test("should update one field on an issue", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .put("/api/issues/test1")
+        .send({ _id: id1, created_by: "sue" })
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, "successfully updated");
+          assert.equal(res.body._id, id1);
+          done();
+        });
     });
 
     test("should update multiple fields on an issue", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .put("/api/issues/test1")
+        .send({ _id: id2, created_by: "sue", open: false })
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, "successfully updated");
+          assert.equal(res.body._id, id2);
+          done();
+        });
     });
 
-    test("should update an issue with missing _id", (done) => {
-      // assert.fail()
-      // done()
+    test("should fail to update an issue with missing _id", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/test1")
+        .send({ created_by: "sue", open: false })
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.error, "missing _id");
+          done();
+        });
     });
 
-    test("should update an issue with no field to update", (done) => {
-      // assert.fail()
-      // done()
+    test("should fail to update an issue with no field to update", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/test1")
+        .send({ _id: id1 })
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.error, "no update field(s) sent");
+          assert.equal(res.body._id, id1);
+          done();
+        });
     });
 
-    test("should update an issue with an invalid _id", (done) => {
-      // assert.fail()
-      // done()
+    test("should fail to update an issue with an invalid _id", (done) => {
+      chai
+        .request(server)
+        .put("/api/issues/test1")
+        .send({ _id: "banana", created_by: "sue", open: false })
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.error, "could not update");
+          assert.equal(res.body._id, "banana");
+          done();
+        });
     });
   });
 

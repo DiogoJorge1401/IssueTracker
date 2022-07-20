@@ -41,7 +41,13 @@ export default function (app: Application) {
     })
 
     .put(async (req, res) => {
-      const { project } = req.params;
+      try {
+        const { _id, ...fields } = req.body;
+        await issueController.update({ _id, fields });
+        return res.json({ result: "successfully updated", _id });
+      } catch (error: any) {
+        return res.json(error);
+      }
     })
 
     .delete(async (req, res) => {

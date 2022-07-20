@@ -51,4 +51,15 @@ export class IssueController {
   async find(query: Query) {
     return await IssueModel.find(query).select({ __v: false });
   }
+
+  async update({ _id, fields }) {
+    if (!_id) throw { error: "missing _id" };
+    if (!Object.keys(fields).length)
+      throw { error: "no update field(s) sent", _id };
+    try {
+      await IssueModel.findOneAndUpdate({ _id }, fields);
+    } catch (error) {
+      throw { error: "could not update", _id };
+    }
+  }
 }
