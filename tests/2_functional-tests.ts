@@ -167,11 +167,11 @@ suite("Functional Tests", () => {
       chai
         .request(server)
         .put("/api/issues/test1")
-        .send({ _id: "banana", created_by: "sue", open: false })
+        .send({ _id: "5f665eb46e296f6b9b6a504d", created_by: "sue", open: false })
         .then((res) => {
           assert.equal(res.status, 200);
           assert.equal(res.body.error, "could not update");
-          assert.equal(res.body._id, "banana");
+          assert.equal(res.body._id, "5f665eb46e296f6b9b6a504d");
           done();
         });
     });
@@ -207,11 +207,11 @@ suite("Functional Tests", () => {
       chai
         .request(server)
         .delete("/api/issues/test1")
-        .send({ _id: "banana" })
+        .send({ _id: "5f665eb46e296f6b9b6a504d" })
         .then((res) => {
           assert.equal(res.status, 200);
           assert.equal(res.body.error, "could not delete");
-          assert.equal(res.body._id, "banana");
+          assert.equal(res.body._id, "5f665eb46e296f6b9b6a504d");
           done();
         });
     });
