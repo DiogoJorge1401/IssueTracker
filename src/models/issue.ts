@@ -14,8 +14,7 @@ const schema = new Schema({
 
 schema.pre("save", function (next) {
   if (this.isNew) return next();
-  this.updated_on = new Date().toUTCString();
-  console.log({ created_on: this.created_on, updated_on: this.updated_on });
+  this.updated_on = new Date().toUTCString()
   next();
 });
 

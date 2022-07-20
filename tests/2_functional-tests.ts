@@ -179,18 +179,42 @@ suite("Functional Tests", () => {
 
   suite("DELETE /api/issues/{project} => Delete issue", () => {
     test("should delete an issue", (done) => {
-      // assert.fail()
-      // done()
-    });
-
-    test("should delete an issue with an invalid _id", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .delete("/api/issues/test1")
+        .send({ _id: id1 })
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.result, "successfully deleted");
+          assert.equal(res.body._id, id1);
+          done();
+        });
     });
 
     test("should delete an issue with missing _id", (done) => {
-      // assert.fail()
-      // done()
+      chai
+        .request(server)
+        .delete("/api/issues/test1")
+        .send()
+        .then((res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.body.error, "missing _id");
+          done();
+        });
+    });
+
+    test("should fail to delete an issue with an invalid _id", (done) => {
+      chai
+        .request(server)
+        .delete("/api/issues/test1")
+        .send({ _id: "banana" })
+        .then((res) => {
+          console.log(res.body);
+          assert.equal(res.status, 200);
+          assert.equal(res.body.error, "could not delete");
+          assert.equal(res.body._id, "banana");
+          done();
+        });
     });
   });
 });

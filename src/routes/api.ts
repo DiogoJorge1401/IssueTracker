@@ -43,14 +43,21 @@ export default function (app: Application) {
     .put(async (req, res) => {
       try {
         const { _id, ...fields } = req.body;
-        await issueController.update({ _id, fields });
-        return res.json({ result: "successfully updated", _id });
+        const result = await issueController.update({ _id, fields });
+        return res.json(result);
       } catch (error: any) {
         return res.json(error);
       }
     })
 
     .delete(async (req, res) => {
-      const { project } = req.params;
+      try {
+        const { _id } = req.body;
+        const result = await issueController.delete(_id);
+        return res.json(result)
+        
+      } catch (error) {
+        return res.json(error)
+      }
     });
 }
